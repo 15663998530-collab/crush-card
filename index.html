@@ -2,18 +2,22 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>✨</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
   body {
-    min-height: 100vh;
     display: flex; justify-content: center; align-items: center;
+    min-height: 100vh;
     background: #0a0a1a;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    padding: 16px;
   }
   canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 0; }
 
@@ -24,37 +28,46 @@
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 24px;
-    padding: 48px 36px;
-    max-width: 380px; width: 92%;
+    padding: 32px 24px;
+    max-width: 360px; width: 100%;
     text-align: center;
     animation: fadeIn 2s ease;
+    margin: auto;
   }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
   .title {
     color: #fff;
-    font-size: 28px; font-weight: 700;
+    font-size: 26px; font-weight: 700;
     letter-spacing: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     background: linear-gradient(135deg, #ff6b9d, #c44dff, #6ec6ff);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .subtitle {
-    color: rgba(255,255,255,0.5);
-    font-size: 13px; letter-spacing: 3px;
-    margin-bottom: 32px;
+    color: rgba(255,255,255,0.45);
+    font-size: 11px; letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .hint {
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    margin-bottom: 24px;
+    font-style: italic;
   }
   .code-block {
     background: rgba(0,0,0,0.4);
     border-radius: 12px;
-    padding: 20px;
-    margin: 24px 0;
+    padding: 16px;
+    margin: 20px 0;
     text-align: left;
     font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-    font-size: 13px; line-height: 2;
+    font-size: 11px; line-height: 1.9;
     color: #a0d2ff;
     border: 1px solid rgba(255,255,255,0.06);
+    overflow-x: auto;
+    white-space: pre;
   }
   .code-block .keyword { color: #ff79c6; }
   .code-block .string { color: #f1fa8c; }
@@ -64,32 +77,41 @@
 
   .btn {
     display: inline-block;
-    margin-top: 28px;
-    padding: 14px 40px;
+    margin-top: 20px;
+    padding: 12px 36px;
     border-radius: 50px;
     border: none;
     background: linear-gradient(135deg, #ff6b9d, #c44dff);
     color: #fff;
-    font-size: 16px; font-weight: 600;
+    font-size: 15px; font-weight: 600;
     letter-spacing: 2px;
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: 0 8px 32px rgba(196, 77, 255, 0.3);
   }
-  .btn:hover { transform: scale(1.05); box-shadow: 0 12px 40px rgba(196, 77, 255, 0.5); }
-  .btn:active { transform: scale(0.97); }
+  .btn:active { transform: scale(0.95); box-shadow: 0 12px 40px rgba(196, 77, 255, 0.5); }
   .btn:focus { outline: none; }
 
   .footer {
-    margin-top: 24px;
-    color: rgba(255,255,255,0.25);
-    font-size: 12px;
+    margin-top: 20px;
+    color: rgba(255,255,255,0.2);
+    font-size: 11px;
     letter-spacing: 1px;
   }
   .message {
     color: rgba(255,255,255,0.8);
-    font-size: 15px; line-height: 1.8;
-    margin: 16px 0;
+    font-size: 14px; line-height: 1.8;
+    margin: 14px 0;
+  }
+
+  @media screen and (max-height: 700px) {
+    .card { padding: 24px 20px; }
+    .title { font-size: 22px; }
+    .code-block { padding: 12px; font-size: 10px; line-height: 1.7; margin: 14px 0; }
+    .btn { margin-top: 14px; padding: 10px 30px; font-size: 14px; }
+    .message { font-size: 13px; margin: 10px 0; }
+    .footer { margin-top: 14px; }
+    .subtitle { margin-bottom: 16px; }
   }
 </style>
 </head>
@@ -98,20 +120,19 @@
 
 <div class="card">
   <div class="title">给 你</div>
+  <div class="hint">今天学代码做的第一个东西，给你看看</div>
   <div class="subtitle">· MADE WITH CLAUDE CODE ·</div>
 
-  <div class="code-block">
-    <span class="comment">// day1.py — 第一天</span><br>
-    <span class="keyword">from</span> claude_code <span class="keyword">import</span> magic<br>
-    <br>
-    <span class="keyword">def</span> <span style="color:#50fa7b">thinking_of_you</span>():<br>
-    &nbsp;&nbsp;<span class="keyword">while</span> <span style="color:#fff">True</span>:<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;send(<span class="string">"💌"</span>)<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;time.sleep(<span class="string">".001s"</span>)<br>
-    <br>
-    result = thinking_of_you()<br>
-    <span class="comment"># 死循环，停不下来</span><span class="cursor">█</span>
-  </div>
+  <div class="code-block"><span class="comment"># day1.py — 第一天</span>
+<span class="keyword">from</span> claude_code <span class="keyword">import</span> magic
+
+<span class="keyword">def</span> <span style="color:#50fa7b">thinking_of_you</span>():
+    <span class="keyword">while</span> <span style="color:#fff">True</span>:
+        send(<span class="string">"💌"</span>)
+        time.sleep(<span class="string">".001s"</span>)
+
+result = thinking_of_you()
+<span class="comment"># 死循环，停不下来</span><span class="cursor">█</span></div>
 
   <p class="message">代码很短<br>但想你的循环会跑一辈子</p>
 
@@ -131,7 +152,6 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// Stars
 for (let i = 0; i < 80; i++) {
   stars.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5+0.5, a: Math.random(), s: Math.random()*0.02+0.005 });
 }
@@ -146,13 +166,12 @@ function drawStars() {
   });
 }
 
-// Floating hearts
 function spawnHeart(x, y) {
   hearts.push({ x, y, vx: (Math.random()-0.5)*2, vy: -Math.random()*3-1, size: Math.random()*14+8, life: 1, color: `hsl(${Math.random()*40+330}, 80%, 65%)` });
 }
 
 function drawHearts() {
-  hearts.forEach((h, i) => {
+  hearts.forEach((h) => {
     h.x += h.vx; h.y += h.vy; h.life -= 0.008;
     const s = h.size * h.life;
     ctx.save(); ctx.translate(h.x, h.y); ctx.scale(s/20, s/20);
@@ -178,7 +197,6 @@ function boom() {
   setTimeout(() => btn.textContent = '再来一次', 600);
 }
 
-// Click/tap anywhere spawns hearts
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.btn')) spawnBurst(e.clientX, e.clientY);
 });
@@ -194,7 +212,6 @@ function loop() {
 }
 loop();
 
-// Auto spawn hearts periodically
 setInterval(() => {
   spawnHeart(Math.random()*w, h+10);
 }, 400);
