@@ -2,22 +2,21 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>✨</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; }
+  html, body { height: 100%; width: 100%; }
   body {
-    display: flex; justify-content: center; align-items: center;
-    min-height: 100vh;
     background: #0a0a1a;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    padding: 16px;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px 14px 40px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
   canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 0; }
 
@@ -27,43 +26,42 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px;
-    padding: 32px 24px;
-    max-width: 360px; width: 100%;
+    border-radius: 20px;
+    padding: 28px 20px 24px;
+    max-width: 340px; width: 100%;
     text-align: center;
     animation: fadeIn 2s ease;
-    margin: auto;
   }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
   .title {
     color: #fff;
-    font-size: 26px; font-weight: 700;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
     background: linear-gradient(135deg, #ff6b9d, #c44dff, #6ec6ff);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .subtitle {
-    color: rgba(255,255,255,0.45);
-    font-size: 11px; letter-spacing: 2px;
-    margin-bottom: 6px;
-  }
   .hint {
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.4);
     font-size: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 4px;
     font-style: italic;
+  }
+  .subtitle {
+    color: rgba(255,255,255,0.4);
+    font-size: 10px; letter-spacing: 2px;
+    margin-bottom: 18px;
   }
   .code-block {
     background: rgba(0,0,0,0.4);
-    border-radius: 12px;
-    padding: 16px;
-    margin: 20px 0;
+    border-radius: 10px;
+    padding: 14px 12px;
+    margin: 0 0 14px;
     text-align: left;
     font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-    font-size: 11px; line-height: 1.9;
+    font-size: 10px; line-height: 1.8;
     color: #a0d2ff;
     border: 1px solid rgba(255,255,255,0.06);
     overflow-x: auto;
@@ -73,45 +71,33 @@
   .code-block .string { color: #f1fa8c; }
   .code-block .comment { color: #6272a4; }
   .code-block .cursor { animation: blink 1s infinite; color: #fff; }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
+  .message {
+    color: rgba(255,255,255,0.8);
+    font-size: 13px; line-height: 1.7;
+    margin: 0 0 12px;
+  }
   .btn {
     display: inline-block;
-    margin-top: 20px;
-    padding: 12px 36px;
+    padding: 10px 32px;
     border-radius: 50px;
     border: none;
     background: linear-gradient(135deg, #ff6b9d, #c44dff);
     color: #fff;
-    font-size: 15px; font-weight: 600;
+    font-size: 14px; font-weight: 600;
     letter-spacing: 2px;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 8px 32px rgba(196, 77, 255, 0.3);
+    box-shadow: 0 6px 24px rgba(196, 77, 255, 0.3);
+    margin-bottom: 16px;
   }
-  .btn:active { transform: scale(0.95); box-shadow: 0 12px 40px rgba(196, 77, 255, 0.5); }
+  .btn:active { transform: scale(0.95); box-shadow: 0 10px 36px rgba(196, 77, 255, 0.5); }
   .btn:focus { outline: none; }
-
   .footer {
-    margin-top: 20px;
-    color: rgba(255,255,255,0.2);
-    font-size: 11px;
+    color: rgba(255,255,255,0.18);
+    font-size: 10px;
     letter-spacing: 1px;
-  }
-  .message {
-    color: rgba(255,255,255,0.8);
-    font-size: 14px; line-height: 1.8;
-    margin: 14px 0;
-  }
-
-  @media screen and (max-height: 700px) {
-    .card { padding: 24px 20px; }
-    .title { font-size: 22px; }
-    .code-block { padding: 12px; font-size: 10px; line-height: 1.7; margin: 14px 0; }
-    .btn { margin-top: 14px; padding: 10px 30px; font-size: 14px; }
-    .message { font-size: 13px; margin: 10px 0; }
-    .footer { margin-top: 14px; }
-    .subtitle { margin-bottom: 16px; }
   }
 </style>
 </head>
@@ -147,7 +133,7 @@ let w, h, hearts = [], stars = [];
 
 function resize() {
   w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
+  h = canvas.height = document.documentElement.scrollHeight;
 }
 resize();
 window.addEventListener('resize', resize);
