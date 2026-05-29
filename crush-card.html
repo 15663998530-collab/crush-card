@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    background: #0a0a1a;
+    overflow: hidden;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 0; }
+
+  .card {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 48px 36px;
+    max-width: 380px; width: 92%;
+    text-align: center;
+    animation: fadeIn 2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  .title {
+    color: #fff;
+    font-size: 28px; font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ff6b9d, #c44dff, #6ec6ff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px; letter-spacing: 3px;
+    margin-bottom: 32px;
+  }
+  .code-block {
+    background: rgba(0,0,0,0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 24px 0;
+    text-align: left;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 13px; line-height: 2;
+    color: #a0d2ff;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .code-block .keyword { color: #ff79c6; }
+  .code-block .string { color: #f1fa8c; }
+  .code-block .comment { color: #6272a4; }
+  .code-block .cursor { animation: blink 1s infinite; color: #fff; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  .btn {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, #ff6b9d, #c44dff);
+    color: #fff;
+    font-size: 16px; font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(196, 77, 255, 0.3);
+  }
+  .btn:hover { transform: scale(1.05); box-shadow: 0 12px 40px rgba(196, 77, 255, 0.5); }
+  .btn:active { transform: scale(0.97); }
+  .btn:focus { outline: none; }
+
+  .footer {
+    margin-top: 24px;
+    color: rgba(255,255,255,0.25);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .message {
+    color: rgba(255,255,255,0.8);
+    font-size: 15px; line-height: 1.8;
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="card">
+  <div class="title">给 你</div>
+  <div class="subtitle">· MADE WITH CLAUDE CODE ·</div>
+
+  <div class="code-block">
+    <span class="comment">// day1.py — 第一天</span><br>
+    <span class="keyword">from</span> claude_code <span class="keyword">import</span> magic<br>
+    <br>
+    <span class="keyword">def</span> <span style="color:#50fa7b">thinking_of_you</span>():<br>
+    &nbsp;&nbsp;<span class="keyword">while</span> <span style="color:#fff">True</span>:<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;send(<span class="string">"💌"</span>)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;time.sleep(<span class="string">".001s"</span>)<br>
+    <br>
+    result = thinking_of_you()<br>
+    <span class="comment"># 死循环，停不下来</span><span class="cursor">█</span>
+  </div>
+
+  <p class="message">代码很短<br>但想你的循环会跑一辈子</p>
+
+  <button class="btn" onclick="boom()">点 我</button>
+  <div class="footer">· 2026.05.29 ·</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let w, h, hearts = [], stars = [];
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Stars
+for (let i = 0; i < 80; i++) {
+  stars.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5+0.5, a: Math.random(), s: Math.random()*0.02+0.005 });
+}
+
+function drawStars() {
+  stars.forEach(s => {
+    s.a += s.s;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${0.3 + Math.sin(s.a)*0.3})`;
+    ctx.fill();
+  });
+}
+
+// Floating hearts
+function spawnHeart(x, y) {
+  hearts.push({ x, y, vx: (Math.random()-0.5)*2, vy: -Math.random()*3-1, size: Math.random()*14+8, life: 1, color: `hsl(${Math.random()*40+330}, 80%, 65%)` });
+}
+
+function drawHearts() {
+  hearts.forEach((h, i) => {
+    h.x += h.vx; h.y += h.vy; h.life -= 0.008;
+    const s = h.size * h.life;
+    ctx.save(); ctx.translate(h.x, h.y); ctx.scale(s/20, s/20);
+    ctx.beginPath();
+    ctx.moveTo(0, -4); ctx.bezierCurveTo(4, -8, 8, -2, 0, 6); ctx.bezierCurveTo(-8, -2, -4, -8, 0, -4);
+    ctx.fillStyle = h.color; ctx.globalAlpha = h.life; ctx.fill(); ctx.restore();
+  });
+  hearts = hearts.filter(h => h.life > 0);
+}
+
+function spawnBurst(x, y) {
+  for (let i = 0; i < 20; i++) {
+    const angle = (Math.PI*2 / 20) * i;
+    const speed = Math.random()*4+2;
+    hearts.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, size: Math.random()*10+6, life: 1, color: `hsl(${Math.random()*60+320}, 80%, 65%)` });
+  }
+}
+
+function boom() {
+  spawnBurst(w/2, h/2);
+  const btn = document.querySelector('.btn');
+  btn.textContent = '💖';
+  setTimeout(() => btn.textContent = '再来一次', 600);
+}
+
+// Click/tap anywhere spawns hearts
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.btn')) spawnBurst(e.clientX, e.clientY);
+});
+document.addEventListener('touchstart', (e) => {
+  const t = e.touches[0];
+  if (!t.target.closest('.btn')) spawnBurst(t.clientX, t.clientY);
+});
+
+function loop() {
+  ctx.clearRect(0, 0, w, h);
+  drawStars(); drawHearts();
+  requestAnimationFrame(loop);
+}
+loop();
+
+// Auto spawn hearts periodically
+setInterval(() => {
+  spawnHeart(Math.random()*w, h+10);
+}, 400);
+</script>
+</body>
+</html>
